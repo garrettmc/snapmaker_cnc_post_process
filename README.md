@@ -2,15 +2,21 @@
 
 ## Modifications from SnapMaker's Post Processor:
 
-Nov 2 2024: I added a new post processor for Aspire (Vectric Aspire and VCarve). I removed the arc commands,
-because SnapMaker's firmware is super slow at processing them. I think they don't have native support for arcs
-in the firmware, so they simulate it with lines. I validated this by running my files for the chain plaque thru
-ArcStraightener and the Snapmaker was able to carve them many times faster with the straightening done in
-software.
+Nov 2 2024: I added a new post processor for Aspire (Vectric Aspire and VCarve). See 
+snapmaker-aspire-configuration/snapmaker-aspire-configuration
 
-By removing the arc commands in the post processor, Vectric does what ArcStraigtener does: makes the arcs in
-to a bunch of little lines. So, when you subsequently run the file through the CNC it runs much faster (and
-doesn't take much more time to produce on a fast host machine).
+
+I removed the arc commands from the original post processor. SnapMaker's firmware is super slow at processing them. 
+I found in researching that the embedded controller code takes the arcs and turns them in to a bunch of little
+line segments. It seems very slow at doing all that math.  I validated this by running my files for the chain plaque thru
+ArcStraightener and after replacing the arcs with lines that way, the Snapmaker was able to carve the files way faster
+(a couple of hours instead of 15). 
+
+By removing the arc commands in the post processor, Vectric does what ArcStraigtener does. It runs the arcs in
+to a bunch of little lines. So, when you subsequently run the file through the CNC it runs much faster. Vectric can
+do this with the speed of the desktop, so it does it quickly and then the embedded controller on the Snapmaker can avoid
+doing lots of math.
+
 
 ## Background
 
